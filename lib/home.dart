@@ -322,8 +322,11 @@ class _FeedCardState extends State<FeedCard> {
           child: Stack(
             alignment: Alignment.topLeft,
             children: [
-              CustomPaint(
-                painter: CirclePainter(),
+              Container(
+                margin: EdgeInsets.only(top: 100),
+                child: CustomPaint(
+                  painter: CirclePainter(),
+                ),
               ),
               Row(
                 children: [
@@ -444,7 +447,7 @@ class CirclePainter extends CustomPainter {
     var location = Offset(posX, posY);
 
     var paintbrush = Paint()
-    ..color = Colors.black;
+    ..color = Colors.white;
 
     canvas.drawCircle(location, radius, paintbrush);
  

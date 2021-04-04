@@ -1,14 +1,16 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:focused_menu/focused_menu.dart';
+import 'package:focused_menu/modals.dart';
+
 
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
-
 class _HomeScreenState extends State<HomeScreen> {
+ 
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,21 +33,47 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 0,
+        selectedItemColor: Colors.greenAccent,
+        unselectedItemColor: Colors.white,
+        backgroundColor: Colors.black,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined, color: Colors.white,),
+            activeIcon: Icon(Icons.home, color: Colors.greenAccent),
+            label: "Home",
+            tooltip: "home feed"
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_box_outlined, color: Colors.white,),
+            activeIcon: Icon(Icons.add_box_rounded, color: Colors.greenAccent),
+            label: "Home",
+            tooltip: "home feed"
+            
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle_outlined, color: Colors.white,),
+            activeIcon: Icon(Icons.account_circle, color: Colors.greenAccent),
+            label: "Accounts"
+          ),
+        ],
+      ),
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Container(
-            //   margin: EdgeInsets.only(
-            //       top: 10, left: MediaQuery.of(context).size.width / 30),
-            //   child: Placeholder(),
-            // ),
+           
             Container(
                 margin: EdgeInsets.only(left: 20, top: 30), child: StoryRow()),
 
-            Container(margin: EdgeInsets.only(top: 50), child: FeedCard())
+            Container(margin: EdgeInsets.only(top: 30), child: FeedCard()),
+            Container(margin: EdgeInsets.only(top: 30), child: FeedCard()),
+            Container(margin: EdgeInsets.only(top: 30), child: FeedCard()),
+            Container(margin: EdgeInsets.only(top: 30), child: FeedCard()),
+            Container(margin: EdgeInsets.only(top: 30), child: FeedCard()),
           ],
         ),
       ),
@@ -323,9 +351,15 @@ class _FeedCardState extends State<FeedCard> {
             alignment: Alignment.topLeft,
             children: [
               Container(
-                margin: EdgeInsets.only(top: 100),
+                margin: EdgeInsets.only(top: 10),
                 child: CustomPaint(
                   painter: CirclePainter(),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 250, left: 150),
+                child: CustomPaint(
+                  painter: BoxPainter(),
                 ),
               ),
               Row(
@@ -366,29 +400,47 @@ class _FeedCardState extends State<FeedCard> {
                     ),
                     onPressed: () {}),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.all(20.0),
-              //   child: Container(
-              //     margin: EdgeInsets.only(top: 50),
-              //     width: MediaQuery.of(context).size.width,
-              //     height: 370,
-              //     child: Card(
-              //       elevation: 8.0,
-              //       shape: RoundedRectangleBorder(
-              //           borderRadius: BorderRadius.circular(30)),
-              //       child: Center(
-              //         child: Padding(
-              //           padding: const EdgeInsets.all(8.0),
-              //           child: Text(
-              //             '"The greatest glory in living lies not in never falling, but in rising every time we fall."',
-              //             textAlign: TextAlign.center,
-              //             style: TextStyle(fontSize: 20, color: Colors.black),
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
+               Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Container(
+                    margin: EdgeInsets.only(top: 50),
+                    width: MediaQuery.of(context).size.width,
+                    height: 370,
+                    child: FocusedMenuHolder(
+                      menuBoxDecoration: BoxDecoration(
+                        color: Colors.grey[900],
+                      ),
+                      blurSize: 5,
+                      duration: Duration(milliseconds: 500),
+                      blurBackgroundColor: Colors.grey[900],
+                      menuWidth: MediaQuery.of(context).size.width*0.5,
+                      menuItemExtent: 50,
+                      onPressed: (){},
+                      menuItems: <FocusedMenuItem>[
+                        FocusedMenuItem(title: Text("About"), onPressed: (){setState(() {});}, trailingIcon: Icon(Icons.details_rounded, color: Colors.red),),
+                        FocusedMenuItem(title: Text("Visit Account"), onPressed: (){setState(() {});}, trailingIcon: Icon(Icons.account_box_rounded, color: Colors.blueAccent), ),
+                        FocusedMenuItem(title: Text("Share to"), onPressed: (){setState(() {});}, trailingIcon: Icon(Icons.share_outlined, color: Colors.purpleAccent), ),
+                        FocusedMenuItem(title: Text("Report", style: TextStyle(color: Colors.white),), onPressed: (){setState(() {});}, trailingIcon: Icon(Icons.error_outline, color: Colors.white), backgroundColor: Colors.redAccent),
+                      ],
+                      child: Card(
+                        elevation: 8.0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30)),
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              '"The greatest glory in living lies not in never falling, but in rising every time we fall."',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 20, color: Colors.black),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              
               Container(
                 margin: EdgeInsets.only(top: 340, left: 230),
                 child: Text(
@@ -441,13 +493,15 @@ class CirclePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
 
-    double posX = size.height/2;
-    double posY = size.width/2;
+    var posX = 100.0;
+    var posY = 100.0;
     var radius =  min(posX, posY);
     var location = Offset(posX, posY);
 
     var paintbrush = Paint()
-    ..color = Colors.white;
+    ..color = Colors.black
+    ..strokeWidth = 80
+    ..style = PaintingStyle.stroke;
 
     canvas.drawCircle(location, radius, paintbrush);
  
@@ -455,5 +509,31 @@ class CirclePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CirclePainter oldDelegate) => true;
+  bool shouldRepaint(CirclePainter oldDelegate) {
+    return true;
+  }
+}
+
+
+class BoxPainter extends CustomPainter {
+
+  @override
+  void paint(Canvas canvas, Size size) {
+     var posX = 100.0;
+    var posY = 100.0;
+    var radius =  min(posX, posY);
+    var location = Offset(posX, posY);
+
+    var paintbrush = Paint()
+    ..color = Colors.black
+    ..strokeWidth = 80
+    ..style = PaintingStyle.stroke;
+
+    canvas.drawRect(Offset(100, 100) & const Size(200, 200), paintbrush);
+ 
+  }
+
+  @override
+  bool shouldRepaint(BoxPainter oldDelegate) => false;
+
 }
